@@ -61,6 +61,66 @@ CLASS zcl_rap_eml_hsic IMPLEMENTATION.
     out->write( failed ).    " complex structures not supported by the console output
     out->write( reported ).  " complex structures not supported by the console output
 
+*    " step 6 - MODIFY Update
+*    MODIFY ENTITIES OF ZI_RAP_Travel_####
+*      ENTITY travel
+*        UPDATE
+*          SET FIELDS WITH VALUE
+*            #( ( TravelUUID  = '<your uuid>'
+*                 Description = 'I like RAP@openSAP' ) )
+*
+*     FAILED DATA(failed)
+*     REPORTED DATA(reported).
+*
+*    " step 6b - Commit Entities
+*    COMMIT ENTITIES
+*      RESPONSE OF ZI_RAP_Travel_####
+*      FAILED     DATA(failed_commit)
+*      REPORTED   DATA(reported_commit).
+*
+*    out->write( 'Update done' ).
+
+*    " step 7 - MODIFY Create
+*    MODIFY ENTITIES OF ZI_RAP_Travel_####
+*      ENTITY travel
+*        CREATE
+*          SET FIELDS WITH VALUE
+*            #( ( %cid        = 'MyContentID_1'
+*                 AgencyID    = '70012'
+*                 CustomerID  = '14'
+*                 BeginDate   = cl_abap_context_info=>get_system_date( )
+*                 EndDate     = cl_abap_context_info=>get_system_date( ) + 10
+*                 Description = 'I like RAP@openSAP' ) )
+*
+*     MAPPED DATA(mapped)
+*     FAILED DATA(failed)
+*     REPORTED DATA(reported).
+*
+*    out->write( mapped-travel ).
+*
+*    COMMIT ENTITIES
+*      RESPONSE OF ZI_RAP_Travel_####
+*      FAILED     DATA(failed_commit)
+*      REPORTED   DATA(reported_commit).
+*
+*    out->write( 'Create done' ).
+
+*   " step 8 - MODIFY Delete
+*    MODIFY ENTITIES OF ZI_RAP_Travel_####
+*      ENTITY travel
+*        DELETE FROM
+*          VALUE
+*            #( ( TravelUUID  = '<your uuid>' ) )
+*
+*     FAILED DATA(failed)
+*     REPORTED DATA(reported).
+*
+*    COMMIT ENTITIES
+*      RESPONSE OF ZI_RAP_Travel_####
+*      FAILED     DATA(failed_commit)
+*      REPORTED   DATA(reported_commit).
+*
+*    out->write( 'Delete done' ).
   ENDMETHOD.
 
 ENDCLASS.
