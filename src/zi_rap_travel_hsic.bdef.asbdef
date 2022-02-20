@@ -1,7 +1,8 @@
-managed implementation in class zbp_i_rap_travel_hsic unique;
+managed;
 strict;
 
 define behavior for ZI_RAP_Travel_HSIC alias Travel
+implementation in class zbp_i_rap_travel_hsic unique
 persistent table ZRAP_ATRAV_HSIC
 lock master
 authorization master ( instance )
@@ -12,7 +13,22 @@ etag master LocalLastChangedAt
   delete;
   association _Booking { create; }
 
-  field ( numbering: managed, readonly ) TravelUUID;
+  field ( numbering : managed, readonly ) TravelUUID;
+  field ( readonly ) TravelId, TotalPrice, TravelStatus;
+  field ( readonly ) LastChangedAt, LastChangedBy, CreatedAt, CreatedBy, LocalLastChangedAt;
+  field ( mandatory ) AgencyID, CustomerID;
+
+  action ( features : instance ) acceptTravel result [1] $self;
+  action ( features : instance ) rejectTravel result [1] $self;
+  internal action recalcTotalPrice;
+
+  determination setInitialStatus on modify { create; }
+  determination calculateTotalPrice on modify { field BookingFee, CurrencyCode; }
+  determination calculateTravelID on save { create; }
+
+  validation validateAgency on save { field AgencyID; create; }
+  validation validateCustomer on save { field CustomerID; create; }
+  validation validateDates on save { field BeginDate, EndDate; create; }
 
   mapping for zrap_atrav_hsic
   {
@@ -36,6 +52,7 @@ etag master LocalLastChangedAt
 }
 
 define behavior for ZI_RAP_Booking_HSIC alias Booking
+implementation in class zbp_i_rap_booking_hsic unique
 persistent table ZRAP_ABOOK_HSIC
 lock dependent by _Travel
 authorization dependent by _Travel
@@ -45,8 +62,13 @@ etag master LocalLastChangedAt
   delete;
   association _Travel;
 
-  field ( readonly ) TravelUUID;
-  field ( numbering: managed, readonly ) BookingUUID;
+  field ( numbering : managed, readonly ) BookingUUID;
+  field ( readonly ) TravelUUID, BookingId;
+  field ( readonly ) CreatedBy, LastChangedBy, LocalLastChangedAt;
+
+  determination calculateBookingID  on modify { create; }
+  determination calculateTotalPrice on modify { field FlightPrice, CurrencyCode; }
+
 
   mapping for zrap_abook_hsic
   {
