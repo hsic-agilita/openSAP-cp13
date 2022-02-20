@@ -2,17 +2,30 @@
 annotate view ZC_RAP_Travel_HSIC
     with 
 {
-  @UI.facet: [ { id:              'Travel',
-                 purpose:         #STANDARD,
-                 type:            #IDENTIFICATION_REFERENCE,
-                 label:           'Travel',
-                 position:        10 },
-               { id:              'Booking',
-                 purpose:         #STANDARD,
-                 type:            #LINEITEM_REFERENCE,
-                 label:           'Booking',
-                 position:        20,
-                 targetElement:   '_Booking'} ]  
+
+  @UI.facet: [ 
+      {
+         id: 'TravelHeaderPrice',
+         purpose: #HEADER,
+         type: #DATAPOINT_REFERENCE,
+         position: 10,
+         targetQualifier: 'PriceData'
+      },
+      {
+         id: 'Travel',
+         purpose: #STANDARD,
+         type: #IDENTIFICATION_REFERENCE,
+         label: 'Travel',
+         position: 10 },
+      { 
+         id: 'Booking',
+         purpose: #STANDARD,
+         type: #LINEITEM_REFERENCE,
+         label: 'Booking',
+         position: 20,
+         targetElement: '_Booking'
+      } 
+  ]  
   
   @UI:{ identification: [{ position: 1, label: 'Travel UUID' }] }
   TravelUUID;
@@ -45,7 +58,8 @@ annotate view ZC_RAP_Travel_HSIC
   BookingFee;
   
   @UI: {  lineItem:       [ { position: 70 } ],
-          identification: [ { position: 70 } ] }   
+          identification: [ { position: 70 } ] }  
+  @UI.dataPoint: { qualifier: 'PriceData', title: 'Total Price'}
   TotalPrice;
   
   @UI: {  lineItem:       [ { position: 80 } ],
@@ -55,7 +69,7 @@ annotate view ZC_RAP_Travel_HSIC
   @UI: {  lineItem:       [ { position: 90 } ],
           identification: [ { position: 90 } ] }   
   TravelStatus;
-
+  
   @UI.hidden: true
   LastChangedAt;
 

@@ -2,6 +2,18 @@
 @AccessControl.authorizationCheck: #CHECK
 @Search.searchable: true
 @Metadata.allowExtensions: true
+@UI: {
+    headerInfo: {
+        typeName: 'Booking',
+        typeNamePlural: 'Bookings',
+        title: {
+            type: #STANDARD, value: 'CarrierName'
+        },
+        description: {
+            value: 'CarrierID'
+        }
+    }
+}
 define view entity ZC_RAP_Booking_HSIC as projection on ZI_RAP_Booking_HSIC as Booking {
     key BookingUUID,
       TravelUUID,

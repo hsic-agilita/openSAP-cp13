@@ -2,6 +2,18 @@
 @AccessControl.authorizationCheck: #CHECK
 @Search.searchable: true
 @Metadata.allowExtensions: true
+@UI: {
+    headerInfo: {
+        typeName: 'Travel',
+        typeNamePlural: 'Travels',
+        title: {
+            type: #STANDARD, value: 'Description'
+        },
+        description: {
+            value: 'TravelID'
+        }
+    }
+}
 define root view entity ZC_RAP_Travel_HSIC as projection on ZI_RAP_Travel_HSIC as Travel {
   key TravelUUID,
       @Search.defaultSearchElement: true
@@ -20,8 +32,10 @@ define root view entity ZC_RAP_Travel_HSIC as projection on ZI_RAP_Travel_HSIC a
       EndDate,
       @Semantics.amount.currencyCode: 'CurrencyCode'
       BookingFee,
+      
       @Semantics.amount.currencyCode: 'CurrencyCode'
       TotalPrice,
+      
       @Consumption.valueHelpDefinition: [{ entity: { name: 'I_Currency', element: 'Currency'} }]
       CurrencyCode,
       Description,
